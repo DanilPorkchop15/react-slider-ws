@@ -1,4 +1,4 @@
-import "./App.css";
+import { AppContainer, AppStyled } from "./AppStyled";
 import Slider from "./components/Slider/Slider";
 import slidesData from "./images.json";
 import { Slide } from "./types/Slider.types";
@@ -6,11 +6,11 @@ import { Slide } from "./types/Slider.types";
 function App() {
   const slides: Slide[] = slidesData;
   return (
-    <div className="App">
-      <div className="container">
+    <AppStyled>
+      <AppContainer>
         <Slider slides={slides} loop navs pages auto stopMouseHover delay={2} />
-      </div>
-    </div>
+      </AppContainer>
+    </AppStyled>
   );
 }
 

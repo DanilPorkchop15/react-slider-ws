@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, useCallback, useRef } from "react";
-import { SliderContainerStyled, SliderStyled, SlideContainerStyled, SlideStyled } from "./SliderStyled";
+import { SliderContainerStyled, SliderStyled, SlideContainerStyled, SlideStyled, SliderTitleStyled, SliderPagesStyled } from "./SliderStyled";
 import { Slide } from "../../types/Slider.types";
 import SliderNav from "./SliderNav/SlideNav";
 import SliderPagination from "./SliderPagination/SliderPagination";
@@ -21,7 +21,7 @@ const Slider: FC<SliderProps> = ({
   pages = false,
   auto = false,
   stopMouseHover = false,
-  delay = 1,
+  delay = 5,
 }) => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const autoInterval = useRef<NodeJS.Timer | null>(null);
@@ -70,25 +70,25 @@ const Slider: FC<SliderProps> = ({
         onMouseLeave={() => auto && stopMouseHover && handleMouseLeave()}
       >
         <SlideContainerStyled>
-          <h1>{slides[currentSlide].text}</h1>
           <SlideStyled
             src={slides[currentSlide].img}
             alt={slides[currentSlide].text}
           />
           {navs && <SliderNav
-            isNext={currentSlide !== slides.length || loop}
+            isNext={currentSlide !== slides.length - 1 || loop}
             isPrevious={currentSlide !== 0 || loop}
             onNavClick={handleNavClick}
-          >
-            {pages && <SliderPagination
-              onSelectPage={handleSelectPage}
-              size={slides.length}
-              current={currentSlide}
-            />}
-          </SliderNav>}
-
+          />}
         </SlideContainerStyled>
+        <SliderTitleStyled>{slides[currentSlide].text}</SliderTitleStyled>
+        <SliderPagesStyled>{`${currentSlide + 1}/${slides.length}`}</SliderPagesStyled>
       </SliderStyled>
+      {pages && <SliderPagination
+        onSelectPage={handleSelectPage}
+        size={slides.length}
+        current={currentSlide}
+      />}
+
     </SliderContainerStyled>
   );
 };

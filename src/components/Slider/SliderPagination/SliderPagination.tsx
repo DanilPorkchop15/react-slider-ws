@@ -13,7 +13,6 @@ const SliderPagination: FC<SliderPaginationProps> = ({ size, current, onSelectPa
     <SliderPaginationDots>
       {[...Array(size)].map((_, i) => <SliderPaginationDot $active={i === current} onClick={() => onSelectPage(i)} key={i} />)}
     </SliderPaginationDots>
-    <span>{`${current + 1}/${size}`}</span>
   </SliderPaginationStyled>;
 };
 
