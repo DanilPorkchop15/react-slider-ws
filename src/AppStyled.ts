@@ -7,6 +7,7 @@ export const AppStyled = styled.div`
   gap: 20px;
   height: 100vh;
   background-color: #111;
+  padding-top: 20px;
 `;
 
 export const AppContainer = styled.div`

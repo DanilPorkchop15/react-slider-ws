@@ -81,7 +81,7 @@ const Slider: FC<SliderProps> = ({
           />}
         </SlideContainerStyled>
         <SliderTitleStyled>{slides[currentSlide].text}</SliderTitleStyled>
-        <SliderPagesStyled>{`${currentSlide + 1}/${slides.length}`}</SliderPagesStyled>
+        <SliderPagesStyled>{`${currentSlide + 1} / ${slides.length}`}</SliderPagesStyled>
       </SliderStyled>
       {pages && <SliderPagination
         onSelectPage={handleSelectPage}
