@@ -1,11 +1,6 @@
+import { FC, useState, useEffect, useCallback, useRef } from "react";
+import { SliderContainerStyled, SliderStyled, SlideContainerStyled, SlideStyled } from "./ SliderStyled";
 import { Slide } from "../../types/Slider.types";
-import { FC, useEffect, useState } from "react";
-import {
-  SliderStyled,
-  SliderContainerStyled,
-  SlideContainerStyled,
-  SlideStyled,
-} from "./ SliderStyled";
 
 interface SliderProps {
   slides: Slide[];
@@ -26,18 +21,38 @@ const Slider: FC<SliderProps> = ({
   stopMouseHover = false,
   delay = 1,
 }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const autoInterval = useRef<NodeJS.Timer | null>(null); // Use useRef to store the interval
+
+  const handleInterval = useCallback(() => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  }, [slides.length]);
 
   useEffect(() => {
-    const autoInterval = setInterval(() => {
-      setCurrentSlide((currentSlide + 1) % slides.length);
-    }, delay * 1000);
-    return () => clearInterval(autoInterval);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (loop) {
+      autoInterval.current = setInterval(handleInterval, delay * 1000);
+      return () => {
+        if (autoInterval.current) clearInterval(autoInterval.current);
+      };
+    }
+  }, [handleInterval, delay, loop]);
+
+  const handleMouseEnter = () => {
+    if (autoInterval.current) clearInterval(autoInterval.current);
+  };
+
+  const handleMouseLeave = () => {
+    autoInterval.current = setInterval(handleInterval, delay * 1000);
+  };
+
   return (
     <SliderContainerStyled>
-      <SliderStyled>
+      <SliderStyled
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <SlideContainerStyled>
+          <h1>{slides[currentSlide].text}</h1>
           <SlideStyled
             src={slides[currentSlide].img}
             alt={slides[currentSlide].text}
