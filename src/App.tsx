@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <Slider slides={slides} loop navs pages auto stopMouseHover delay={1} />
+        <Slider slides={slides} loop navs pages auto stopMouseHover delay={2} />
       </div>
     </div>
   );

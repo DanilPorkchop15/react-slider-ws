@@ -1,5 +1,5 @@
-import { FC, useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { SliderContainerStyled, SliderStyled, SlideContainerStyled, SlideStyled } from "./ SliderStyled";
+import { FC, useState, useEffect, useCallback, useRef } from "react";
+import { SliderContainerStyled, SliderStyled, SlideContainerStyled, SlideStyled } from "./SliderStyled";
 import { Slide } from "../../types/Slider.types";
 import SliderNav from "./SliderNav/SlideNav";
 import SliderPagination from "./SliderPagination/SliderPagination";
@@ -24,7 +24,7 @@ const Slider: FC<SliderProps> = ({
   delay = 1,
 }) => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const autoInterval = useRef<NodeJS.Timer | null>(null); // Use useRef to store the interval
+  const autoInterval = useRef<NodeJS.Timer | null>(null);
 
   const handleInterval = useCallback(() => {
     const nextSlide: (prevSlide: number) => number = loop
@@ -57,7 +57,7 @@ const Slider: FC<SliderProps> = ({
     } else {
       setCurrentSlide((currentSlide - 1) < 0 ? slides.length - 1 : currentSlide - 1);
     }
-  }, [setCurrentSlide, slides.length]);
+  }, [currentSlide, setCurrentSlide, slides.length]);
 
   const handleSelectPage = (page: number) => {
     setCurrentSlide(page);
