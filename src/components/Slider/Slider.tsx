@@ -1,6 +1,8 @@
 import { FC, useState, useEffect, useCallback, useRef } from "react";
 import { SliderContainerStyled, SliderStyled, SlideContainerStyled, SlideStyled } from "./ SliderStyled";
 import { Slide } from "../../types/Slider.types";
+import SliderNav from "./SliderNav/SlideNav";
+import SliderPagination from "./SliderPagination/SliderPagination";
 
 interface SliderProps {
   slides: Slide[];
@@ -48,6 +50,19 @@ const Slider: FC<SliderProps> = ({
     autoInterval.current = setInterval(handleInterval, delay * 1000);
   };
 
+  const handleNavClick = (isNext: boolean) => {
+
+    if (isNext) {
+      setCurrentSlide((currentSlide + 1) % slides.length);
+    } else {
+      setCurrentSlide((currentSlide - 1) < 0 ? slides.length - 1 : currentSlide - 1);
+    }
+  }
+
+  const handleSelectPage = (page: number) => {
+    setCurrentSlide(page);
+  }
+
   return (
     <SliderContainerStyled>
       <SliderStyled
@@ -60,6 +75,18 @@ const Slider: FC<SliderProps> = ({
             src={slides[currentSlide].img}
             alt={slides[currentSlide].text}
           />
+          {navs && <SliderNav
+            isNext={currentSlide !== slides.length || loop}
+            isPrevious={currentSlide !== 0 || loop}
+            onNavClick={handleNavClick}
+          >
+            {pages && <SliderPagination
+              onSelectPage={handleSelectPage}
+              size={slides.length}
+              current={currentSlide}
+            />}
+          </SliderNav>}
+
         </SlideContainerStyled>
       </SliderStyled>
     </SliderContainerStyled>
