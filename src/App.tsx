@@ -1,24 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Slider from "./components/Slider/Slider";
+import slidesData from "./images.json";
+import { Slide } from "./types/Slider.types";
 
 function App() {
+  const slides: Slide[] = slidesData;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Slider slides={slides} loop navs pages auto stopMouseHover delay={3} />
     </div>
   );
 }
