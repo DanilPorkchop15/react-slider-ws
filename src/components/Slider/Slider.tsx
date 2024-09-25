@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useCallback, useRef } from "react";
+import { FC, useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { SliderContainerStyled, SliderStyled, SlideContainerStyled, SlideStyled } from "./ SliderStyled";
 import { Slide } from "../../types/Slider.types";
 import SliderNav from "./SliderNav/SlideNav";
@@ -50,14 +50,14 @@ const Slider: FC<SliderProps> = ({
     autoInterval.current = setInterval(handleInterval, delay * 1000);
   };
 
-  const handleNavClick = (isNext: boolean) => {
+  const handleNavClick = useCallback((isNext: boolean) => {
 
     if (isNext) {
       setCurrentSlide((currentSlide + 1) % slides.length);
     } else {
       setCurrentSlide((currentSlide - 1) < 0 ? slides.length - 1 : currentSlide - 1);
     }
-  }
+  }, [setCurrentSlide, slides.length]);
 
   const handleSelectPage = (page: number) => {
     setCurrentSlide(page);

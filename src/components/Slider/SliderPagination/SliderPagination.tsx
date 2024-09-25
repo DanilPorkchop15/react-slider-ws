@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { SliderNavStyled } from "../SliderNav/SliderNavStyled";
-import { SliderPaginationDot } from "./SliderPaginationStyled";
+import { SliderPaginationDot, SliderPaginationDots, SliderPaginationStyled } from "./SliderPaginationStyled";
 
 interface SliderPaginationProps {
   size: number;
@@ -10,9 +9,12 @@ interface SliderPaginationProps {
 
 const SliderPagination: FC<SliderPaginationProps> = ({ size, current, onSelectPage }) => {
 
-  return <SliderNavStyled>
-    {[...Array(size)].map((_, i) => <SliderPaginationDot $active={i === current} onClick={() => onSelectPage(i)} key={i} />)}
-  </SliderNavStyled>;
+  return <SliderPaginationStyled>
+    <SliderPaginationDots>
+      {[...Array(size)].map((_, i) => <SliderPaginationDot $active={i === current} onClick={() => onSelectPage(i)} key={i} />)}
+    </SliderPaginationDots>
+    <span>{`${current + 1}/${size}`}</span>
+  </SliderPaginationStyled>;
 };
 
 export default SliderPagination;
