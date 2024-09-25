@@ -7,7 +7,9 @@ function App() {
   const slides: Slide[] = slidesData;
   return (
     <div className="App">
-      <Slider slides={slides} loop navs pages auto stopMouseHover delay={3} />
+      <div className="container">
+        <Slider slides={slides} loop navs pages auto stopMouseHover delay={1} />
+      </div>
     </div>
   );
 }

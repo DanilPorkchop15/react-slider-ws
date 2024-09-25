@@ -25,17 +25,20 @@ const Slider: FC<SliderProps> = ({
   const autoInterval = useRef<NodeJS.Timer | null>(null); // Use useRef to store the interval
 
   const handleInterval = useCallback(() => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-  }, [slides.length]);
+    const nextSlide: (prevSlide: number) => number = loop
+      ? (prevSlide) => (prevSlide + 1) % slides.length
+      : (prevSlide) => prevSlide === slides.length - 1 ? prevSlide : prevSlide + 1;
+    setCurrentSlide(nextSlide);
+  }, [slides.length, loop]);
 
   useEffect(() => {
-    if (loop) {
+    if (auto) {
       autoInterval.current = setInterval(handleInterval, delay * 1000);
       return () => {
         if (autoInterval.current) clearInterval(autoInterval.current);
       };
     }
-  }, [handleInterval, delay, loop]);
+  }, [handleInterval, delay, auto]);
 
   const handleMouseEnter = () => {
     if (autoInterval.current) clearInterval(autoInterval.current);
@@ -48,8 +51,8 @@ const Slider: FC<SliderProps> = ({
   return (
     <SliderContainerStyled>
       <SliderStyled
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => auto && stopMouseHover && handleMouseEnter()}
+        onMouseLeave={() => auto && stopMouseHover && handleMouseLeave()}
       >
         <SlideContainerStyled>
           <h1>{slides[currentSlide].text}</h1>
