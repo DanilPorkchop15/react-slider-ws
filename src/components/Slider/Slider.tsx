@@ -88,16 +88,22 @@ const Slider: FC<SliderProps> = ({
   const slideElements = useMemo(
     () =>
       slides.map((slide) => (
-        <SlideContainerStyled key={nanoid()}>
-          <SlideStyled src={slide.img} alt={slide.text} />
+        <SlideContainerStyled key={nanoid()} role="group">
+          <SlideStyled
+            src={slide.img}
+            alt={slide.text}
+            role="img"
+            aria-label={slide.text}
+          />
         </SlideContainerStyled>
       )),
     [slides]
   );
 
   return (
-    <SliderContainerStyled>
+    <SliderContainerStyled role="region" aria-label="slider">
       <SliderStyled
+        role="none"
         onMouseEnter={auto && stopMouseHover ? handleMouseEnter : undefined}
         onMouseLeave={auto && stopMouseHover ? handleMouseLeave : undefined}
       >
@@ -109,8 +115,8 @@ const Slider: FC<SliderProps> = ({
             onNavClick={handleNavClick}
           />
         )}
-        <SliderTitleStyled>{slides[currentSlide].text}</SliderTitleStyled>
-        <SliderPagesStyled>{`${currentSlide + 1} / ${
+        <SliderTitleStyled role="text">{slides[currentSlide].text}</SliderTitleStyled>
+        <SliderPagesStyled role="text">{`${currentSlide + 1} / ${
           slides.length
         }`}</SliderPagesStyled>
       </SliderStyled>

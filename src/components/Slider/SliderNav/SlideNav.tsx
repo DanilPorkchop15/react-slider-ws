@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEventHandler } from "react";
 import { SliderNavButton, SliderNavStyled } from "./SliderNavStyled";
 
 interface SliderNavProps {
@@ -7,13 +7,35 @@ interface SliderNavProps {
   isPrevious: boolean;
 }
 
-const SliderNav: FC<SliderNavProps> = ({ onNavClick, isPrevious, isNext }) => {
+const SliderNav: FC<SliderNavProps> = ({
+  onNavClick,
+  isPrevious,
+  isNext,
+}: SliderNavProps) => {
+  const handlePrevClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    onNavClick(false);
+  };
+
+  const handleNextClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    onNavClick(true);
+  };
+
   return (
     <SliderNavStyled>
-      <SliderNavButton disabled={!isPrevious} onClick={() => onNavClick(false)}>
+      <SliderNavButton
+        aria-label="Previous"
+        disabled={!isPrevious}
+        onClick={handlePrevClick}
+      >
         &lt;
       </SliderNavButton>
-      <SliderNavButton disabled={!isNext} onClick={() => onNavClick(true)}>
+      <SliderNavButton
+        aria-label="Next"
+        disabled={!isNext}
+        onClick={handleNextClick}
+      >
         &gt;
       </SliderNavButton>
     </SliderNavStyled>
@@ -21,3 +43,4 @@ const SliderNav: FC<SliderNavProps> = ({ onNavClick, isPrevious, isNext }) => {
 };
 
 export default SliderNav;
+
