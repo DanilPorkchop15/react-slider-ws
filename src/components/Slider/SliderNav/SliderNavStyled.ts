@@ -1,10 +1,10 @@
 import styled from "styled-components";
+import { flexAlignCenterStyled } from "../../../assets/styles/utils";
 
 export const SliderNavStyled = styled.div`
-  display: flex;
+  ${flexAlignCenterStyled}
   width: 95%;
   justify-content: space-between;
-  align-items: center;
   position: absolute;
   top: 50%;
   left: 50%;
