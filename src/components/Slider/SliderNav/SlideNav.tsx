@@ -28,6 +28,7 @@ const SliderNav: FC<SliderNavProps> = ({
         aria-label="Previous"
         disabled={!isPrevious}
         onClick={handlePrevClick}
+        role="button"
       >
         &lt;
       </SliderNavButton>
@@ -35,6 +36,7 @@ const SliderNav: FC<SliderNavProps> = ({
         aria-label="Next"
         disabled={!isNext}
         onClick={handleNextClick}
+        role="button"
       >
         &gt;
       </SliderNavButton>
