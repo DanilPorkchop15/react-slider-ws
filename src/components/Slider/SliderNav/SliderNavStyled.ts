@@ -22,5 +22,4 @@ export const SliderNavButton = styled.button`
   color: white;
   &:disabled {
     background-color: #aaa;
-`
-
+`;
