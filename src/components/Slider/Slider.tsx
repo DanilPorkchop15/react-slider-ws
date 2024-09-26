@@ -34,16 +34,24 @@ const Slider: FC<SliderProps> = ({
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const autoTimeoutId = useRef<number | null>(null);
 
+  const handleInterval = useCallback(() => {
+    const nextSlide: (prevSlide: number) => number = loop
+      ? (prevSlide) => (prevSlide + 1) % slides.length
+      : (prevSlide) =>
+          prevSlide === slides.length - 1 ? prevSlide : prevSlide + 1;
+    setCurrentSlide(nextSlide);
+  }, [slides.length, loop]);
+
   useEffect(() => {
     if (auto) {
       const timeoutId = window.setTimeout(
-        () => setCurrentSlide((currentSlide + 1) % slides.length),
+        handleInterval,
         delay * 1000
       );
       autoTimeoutId.current = timeoutId;
       return () => window.clearTimeout(timeoutId);
     }
-  }, [auto, delay, currentSlide, slides.length]);
+  }, [auto, delay, currentSlide, slides.length, handleInterval]);
 
   const handleMouseEnter = useCallback(() => {
     if (autoTimeoutId.current) window.clearTimeout(autoTimeoutId.current);
