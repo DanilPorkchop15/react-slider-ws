@@ -1,9 +1,9 @@
 import styled from "styled-components";
+import { flexAlignCenterStyled, flexColumnStyled } from "./assets/styles/utils";
 
 export const AppStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${flexColumnStyled}
+  ${flexAlignCenterStyled}
   gap: 20px;
   height: 100vh;
   background-color: #111;
@@ -13,8 +13,7 @@ export const AppStyled = styled.div`
 export const AppContainer = styled.div`
   width: 100%;
   max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${flexColumnStyled}
+  ${flexAlignCenterStyled}
   gap: 20px;
 `;

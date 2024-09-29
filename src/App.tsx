@@ -8,10 +8,20 @@ function App() {
   return (
     <AppStyled>
       <AppContainer>
-        <Slider slides={slides} loop navs pages auto stopMouseHover delay={2} />
+        <Slider
+          aria-label="Gallery with images"
+          slides={slides}
+          auto
+          loop
+          pages
+          navs
+          stopMouseHover
+          delay={2}
+        />
       </AppContainer>
     </AppStyled>
   );
 }
 
 export default App;
+

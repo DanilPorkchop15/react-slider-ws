@@ -1,4 +1,5 @@
-import { FC, useState, useEffect, useCallback, useRef } from "react";
+import { FC, useMemo, useState, useEffect, useCallback, useRef } from "react";
+import { nanoid } from "nanoid";
 import {
   SliderContainerStyled,
   SliderStyled,
@@ -32,9 +33,11 @@ const Slider: FC<SliderProps> = ({
   delay = 5,
 }) => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+
   const autoInterval = useRef<NodeJS.Timer | null>(null);
   const [direction, setDirection] = useState<"next" | "prev">("next");
-
+  const autoTimeoutId = useRef<number | null>(null);
+      
   const handleInterval = useCallback(() => {
     const nextSlide: (prevSlide: number) => number = loop
       ? (prevSlide) => (prevSlide + 1) % slides.length
@@ -45,20 +48,26 @@ const Slider: FC<SliderProps> = ({
 
   useEffect(() => {
     if (auto) {
-      autoInterval.current = setInterval(handleInterval, delay * 1000);
-      return () => {
-        if (autoInterval.current) clearInterval(autoInterval.current);
-      };
+      const timeoutId = window.setTimeout(
+        handleInterval,
+        delay * 1000
+      );
+      autoTimeoutId.current = timeoutId;
+      return () => window.clearTimeout(timeoutId);
     }
-  }, [handleInterval, delay, auto]);
+  }, [auto, delay, currentSlide, slides.length, handleInterval]);
 
-  const handleMouseEnter = () => {
-    if (autoInterval.current) clearInterval(autoInterval.current);
-  };
+  const handleMouseEnter = useCallback(() => {
+    if (autoTimeoutId.current) window.clearTimeout(autoTimeoutId.current);
+  }, []);
 
-  const handleMouseLeave = () => {
-    autoInterval.current = setInterval(handleInterval, delay * 1000);
-  };
+  const handleMouseLeave = useCallback(() => {
+    const timeoutId = window.setTimeout(
+      () => setCurrentSlide((currentSlide + 1) % slides.length),
+      delay * 1000
+    );
+    autoTimeoutId.current = timeoutId;
+  }, [delay, currentSlide, slides.length]);
 
   const handleNavClick = useCallback(
     (isNext: boolean) => {
@@ -79,11 +88,27 @@ const Slider: FC<SliderProps> = ({
     setCurrentSlide(page);
   };
 
+  const slideElements = useMemo(
+    () =>
+      slides.map((slide) => (
+        <SlideContainerStyled key={nanoid()} role="group">
+          <SlideStyled
+            src={slide.img}
+            alt={slide.text}
+            role="img"
+            aria-label={slide.text}
+          />
+        </SlideContainerStyled>
+      )),
+    [slides]
+  );
+
   return (
-    <SliderContainerStyled>
+    <SliderContainerStyled role="region" aria-label="slider">
       <SliderStyled
-        onMouseEnter={() => auto && stopMouseHover && handleMouseEnter()}
-        onMouseLeave={() => auto && stopMouseHover && handleMouseLeave()}
+        role="none"
+        onMouseEnter={auto && stopMouseHover ? handleMouseEnter : undefined}
+        onMouseLeave={auto && stopMouseHover ? handleMouseLeave : undefined}
       >
         <SlideContainerStyled>
           <AnimatePresence mode="wait">
@@ -108,6 +133,18 @@ const Slider: FC<SliderProps> = ({
         </SlideContainerStyled>
         <SliderTitleStyled>{slides[currentSlide].text}</SliderTitleStyled>
         <SliderPagesStyled>{`${currentSlide + 1} / ${slides.length}`}</SliderPagesStyled>
+        {slideElements[currentSlide]}
+        {navs && (
+          <SliderNav
+            isNext={currentSlide !== slides.length - 1 || loop}
+            isPrevious={currentSlide !== 0 || loop}
+            onNavClick={handleNavClick}
+          />
+        )}
+        <SliderTitleStyled role="text">{slides[currentSlide].text}</SliderTitleStyled>
+        <SliderPagesStyled role="text">{`${currentSlide + 1} / ${
+          slides.length
+        }`}</SliderPagesStyled>
       </SliderStyled>
       {pages && (
         <SliderPagination
@@ -121,3 +158,4 @@ const Slider: FC<SliderProps> = ({
 };
 
 export default Slider;
+
