@@ -22,7 +22,7 @@ export const SliderStyled = styled.div`
 `;
 
 export const SlideContainerStyled = styled.div`
-  height: 100%; 
+  height: 100%;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -41,7 +41,7 @@ export const SliderTitleStyled = styled.span`
   text-align: center;
   position: absolute;
   bottom: 10px;
-`
+`;
 
 export const SliderPagesStyled = styled.span`
   color: white;
@@ -49,4 +49,4 @@ export const SliderPagesStyled = styled.span`
   left: 20px;
   top: 10px;
   filter: drop-shadow(0 3px 3px black);
-`
+`;
